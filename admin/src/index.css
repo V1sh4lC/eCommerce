@@ -7,6 +7,10 @@
   font-family: Outfit;
 }
 
+select, input, textarea {
+  @apply border-[#c2c2c2] outline-[#c586a5] rounded
+}
+
 .active {
   @apply bg-[#ffebf5] border border-[#C586A5]
 }
