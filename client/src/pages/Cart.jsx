@@ -5,11 +5,16 @@ import { assets } from '../assets/frontend_assets/assets'
 import CartTotal from '../components/CartTotal'
 
 const Cart = () => {
-  const {products, currency, cartItems, updateQuantity, navigate} = useContext(ShopContext)
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext)
 
   const [cartData, setCartData] = useState([])
 
   useEffect(() => {
+
+    if (products.length <= 0) {
+      return
+    }
+    
     const tempData = []
     for (const items in cartItems) {
       for (const item in cartItems[items]) {
@@ -23,12 +28,12 @@ const Cart = () => {
       }
     }
     setCartData(tempData)
-  }, [cartItems])
+  }, [cartItems, products])
 
   return (
     <div className='border-t pt-14'>
       <div className='text-2xl mb-3'>
-        <Title text1={'YOUR'} text2={'CART'}/> 
+        <Title text1={'YOUR'} text2={'CART'} />
       </div>
       <div>
         {
@@ -46,7 +51,7 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                <input onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.quantity}/>
+                <input onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.quantity} />
                 <img onClick={() => updateQuantity(item._id, item.size, 0)} className='w-4 mr-4 cursor-pointer sm:w-5' src={assets.bin_icon} alt="" />
               </div>
             )
