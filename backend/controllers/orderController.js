@@ -79,7 +79,26 @@ const placeOrderStripe = async (req, res) => {
             mode: 'payment'
         })
 
-        res.json({success: true, session_url: session.url})
+        res.json({ success: true, session_url: session.url })
+    } catch (error) {
+        console.error(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+//verify stripe payment
+const verifyStripe = async (req, res) => {
+    const { orderId, success, userId } = req.body
+
+    try {
+        if (success === "true") {
+            await orderModel.findByIdAndUpdate(orderId, { payment: true })
+            await userModel.findByIdAndUpdate(userId, { cartData: {} })
+            res.json({ success: true })
+        } else {
+            await orderModel.findByIdAndDelete(orderId)
+            res.json({ success: false })
+        }
     } catch (error) {
         console.error(error)
         res.json({ success: false, message: error.message })
@@ -126,4 +145,4 @@ const updateStatus = async (req, res) => {
     }
 }
 
-export { placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus }
+export { placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus, verifyStripe }
