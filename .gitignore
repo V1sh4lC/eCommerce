@@ -1,3 +1,4 @@
 putDataTemp/
 
 *.env
+*envFile
